@@ -1,0 +1,11 @@
+The VFS is structured as given in VFS.png.  This text file will describe the overall function not able to be shown in the diagram.
+
+Each path is a standard Unix styled path aka /this/is/a/path/to/a/file.  The / is the whole VirtualFileSystem.  The listing of / will give a set of directories whos names match the Name of the FilesytemPlugins loaded.
+
+For loading and unloading datasources, the main operation to take place is to add the FilesystemPlugin to the dataSources dict.  The key will be the string that is stored in the plugin's Name attribute.
+
+For list, it will function very similar to ls.  If a path to a directory is given, all of the entries in that directory will be returned, if it is given the path to a file, it will return a list with one entry which is that file.  If any subdirectories are listed, their path will be prefixed with a d such as "d/path/to/dir".
+
+For put, the plugin will attempt to store the given entry.  If this operation is not supported, an exception will be thrown.  If it is supported, the plugin will store the Entry wherever it wants.  It will then return an updated Entry with its path updated and the new filehandle.
+
+For search, metadata is a dict with keys such as "artist" or "genre" or the like.  Search in the main VFS will call the search method with these arguments on all dataSources.  For the plugins, they will try to match all metadata they can use.  As far as the search goes, each entry in the dictionary will be considered an AND.
